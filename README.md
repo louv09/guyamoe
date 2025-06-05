@@ -1,4 +1,4 @@
-# Danke.moe
+# Roml Scans
 Website for the [Danke Für Lesen](https://danke.moe) scanlation group.
 Generalized manga reading framework for scanlation groups. This is a fork of [Guya.moe](https://github.com/appu1232/guyamoe), a website focus on Kaguya-sama manga. Most of the nginx configs are from [mahoushoujobu.com](https://github.com/milleniumbug/guyamoe)'s fork.
 

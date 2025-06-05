@@ -1,0 +1,239 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block footer %}
+<script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js"></script>
+<script defer>
+var reading_button = null;
+
+	function zpad(n) {
+		if (n < 10) return '0' + n;
+		return n;
+	}
+
+	function listMode(mode) {
+		let availableFeatures = {{ available_features | safe }};
+		let availableModes = ["detailed", "compact", "volumeCovers"].filter(e => availableFeatures.includes(e));
+		if (availableModes.length <= 1) {
+			// Hide the buttons if there's only one view
+			availableModes.forEach(m => {
+				document.getElementById(`${m}Mode`).classList.add("d-none");
+				document.getElementById(`${m}View`).classList.remove("d-none");
+			});
+		} else {
+			availableModes.forEach(m => {
+				if (m == mode) {
+					document.getElementById(`${m}Mode`).classList.add("s");
+					document.getElementById(`${m}View`).classList.remove("d-none");
+				} else {
+					document.getElementById(`${m}Mode`).classList.remove("s");
+					document.getElementById(`${m}View`).classList.add("d-none");
+				}
+			});
+		}
+	}
+
+	window.addEventListener("DOMContentLoaded", () => {
+		listMode("volumeCovers");
+		const lazyContent = new LazyLoad({
+		  // use_native: true // <-- there you go
+		});
+		lazyContent.update();
+	});
+
+</script>
+{% endblock %} {% block body %}
+<style>
+	.active {
+		background-color: red;
+		color: white;
+	}
+
+	h1 {
+		font-size: 1.4em;
+	}
+
+	p {
+		color: #dedede;
+	}
+
+	html,
+	html.h-100 {
+		background-attachment: fixed;
+		background-position: 50% 10%;
+		background-size: 1500px;
+		background-image: url("/static/img/bg_box.png");
+		background-color: black !important;
+	}
+
+	body {
+		background: none !important;
+		background-color: none !important;
+	}
+</style>
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<img src="" id="imagepreview" style="width: 100%; height: 100%;" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" id="volumePrev">
+					Prev
+				</button>
+				<button type="button" class="btn btn-default" id="volumeNext">
+					Next
+				</button>
+				<button type="button" class="btn btn-default" id="openOriginal">
+					Open original
+				</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid page-series">
+	<div class="bs-docs-section clearfix mt-1">
+		<div class="row justify-content-center">
+			<!-- <div class="col-lg-2 col-md-3 col-sm-11 col-xs-12 mb-4 side-cover">
+				<div class="list-item">
+					<div class="list-content">
+						<div class="list-body d-flex justify-content-center">
+							<span class="text-white text-white font-weight-bold"> </span>
+						</div>
+					</div>
+					<div class="media media-3x4 justify-content-center">
+						<picture>
+							{% if cover_vol_url_webp %}
+							<source type="image/webp" srcset="{{ cover_vol_url_webp }}" class="img-fluid"
+								alt="{{ series }} manga" />
+							{% endif %}
+							<img src="{{ cover_vol_url }}" class="img-fluid" alt="{{ series }} manga" />
+						</picture>
+					</div>
+				</div>
+				<div class="card sidecard">
+					<div class="card-body">
+						<table class="table table-borderless table-sm small">
+							<tbody>
+								{% for type, value in metadata %}
+								<tr>
+									<th>{{ type }}</th>
+									<td class="text-sm">{{ value }}</td>
+
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div> -->
+			<div class="col-lg-8 col-md-9 col-sm-11 col-xs-12 series-content">
+			<!-- 	<article>
+					<picture>
+						<source type="image/webp" srcset="{{ cover_vol_url_webp }}" class="img-fluid"
+							alt="{{ series }} manga" />
+						<img src="{{ cover_vol_url }}" class="img-fluid" alt="{{ series }} manga" />
+					</picture>
+					<table class="table table-borderless table-sm small" style="display: none;">
+						<tbody>
+							{% for type, value in metadata %}
+							<tr>
+								<th>{{ type }}</th>
+								<td class="text-sm">{{ value }}</td>
+
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<h1>{{ series }}</h1>
+					{% if alt_titles %}
+					{% for alt in alt_titles %}
+					<h2>
+						{{ alt }}
+					</h2>
+					{% endfor %}
+					{% endif %}
+					{% if original_url %}
+					<a href="{{ original_url }}">View Original</a>
+					{% endif %}
+					{{ synopsis|safe|linebreaks }}
+				</article> -->
+				<div class="btn-group" role="group">
+					{% if "detailed" in available_features %}
+					<button type="button" id="detailedMode" class="tag-display-mode-toggle btn"
+						onclick="listMode('detailed');">
+						Detailed
+					</button>
+					{% endif %}
+					{% if "compact" in available_features %}
+					<button type="button" id="compactMode" class="tag-display-mode-toggle btn"
+						onclick="listMode('compact');">
+						Compact
+					</button>
+					{% endif %}
+					{% if "volumeCovers" in available_features %}
+					<button type="button" id="volumeCoversMode" class="tag-display-mode-toggle btn"
+						onclick="listMode('volumeCovers')"></button>
+					{% endif %}
+					{% if "rss" in available_features %}
+					<a href="http://{{ root_domain }}/reader/other/rss/all" target="_blank"><i
+							class="fa fa-rss"></i></a>
+					{% endif %}
+				</div>
+				{% if "title" in available_features %}
+				<article>
+					<h1 style="text-align: center;">Series and oneshots by {{ author }}</h1>
+				</article>
+				{% endif %}
+				{% if "volumeCovers" in available_features %}
+				<div class="container-fluid" id="volumeCoversView">
+					<!-- onerror='this.onerror=null; this.src="{{ s.volume_cover }}"' -->
+					{% for s in series_list %}
+					<div class="mb-1">
+						<a  href="{{ s.series_url }}" >
+							{% if s.has_cover %}
+								{% if forloop.counter0 < 3 %}
+								<img class="gallery-image" src="{{ s.volume_cover_webp }}" alt="Cover for {{ s.name }}" width="{{ s.volume_cover_width }}"  height="{{ s.volume_cover_height }}" onerror='this.onerror=null; this.src="{{ s.volume_cover }}"'/>
+								{% else %}
+								<img class="gallery-image lazy" data-src="{{ s.volume_cover }}" alt="Cover for {{ s.name }}" width="{{ s.volume_cover_width }}"  height="{{ s.volume_cover_height }}" /> 
+								{% endif %}
+							{% endif %}
+							<div class="gallery-caption">
+								{% for value in s.metadata %}
+									<p class="text-center small text-muted mb-1">{{ value }}</p>
+								{% endfor %}
+								<p class="text-center medium mb-1">{{ s.name }}</p>
+								{% if s.is_nsfw %}
+								<span class="badge badge-danger">NSFW</span>
+								{% endif %}
+							</div>
+						</a>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	// remoteStorage.on("ready", async () => {
+	//   {% if reader_modifier %}
+ //      let source = "{{ reader_modifier }}".split("/")[1];
+ //      {% else %}
+ //      let source = window.location.pathname
+ //        .split("/")
+ //        .filter(e => e)[1]
+ //        .replace("_", " ");
+ //      {% endif %}
+
+	//  {% for series_slug, url, title in unique_series %}
+ //      await globalHistoryHandler.pushSeries("{{ series_slug }}", "", source, "{{ url }}", "{{ title }}");
+	//  {% endfor %}
+ //      window.dispatchEvent(new CustomEvent("history-ready"));
+ //    });
+</script>
+{% endblock %}

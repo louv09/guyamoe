@@ -15,6 +15,7 @@ import sys
 import logging
 import subprocess
 from pathlib import Path
+from whitenoise import WhiteNoise
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -73,7 +74,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "homepage.middleware.ReferralMiddleware",
-    "whitenoise.middleware.WhiteNoise.Middleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 # REFERRAL_SERVICE = 'http://127.0.0.1:8080' # Change this to where-ever Ai is hosted

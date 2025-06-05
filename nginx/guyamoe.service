@@ -1,0 +1,20 @@
+[Unit]
+Description=GuyaMoe
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=notify
+Restart=on-failure
+RestartSec=2
+User=ubuntu
+Environment="ALLOWED_HOSTS=danke.moe" "DJANGO_SETTINGS_MODULE=guyamoe.settings.prod"
+ExecStart=/usr/local/bin/uwsgi --ini /home/ubuntu/guyamoe/nginx/uwsgi.ini --module guyamoe.wsgi:application --socket /home/ubuntu/guyamoe/nginx/socket/guya.sock --chmod-socket=666
+# -s /home/ubuntu/guyamoe/nginx/guyamoe.socket
+StandardOutput=syslog
+StandardError=syslog
+WorkingDirectory=/home/ubuntu/guyamoe
+
+[Install]
+WantedBy=multi-user.target
+

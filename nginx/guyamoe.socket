@@ -1,0 +1,11 @@
+[Unit]
+Description=Socket for guya.moe
+
+[Socket]
+ListenStream=/home/ubuntu/guyamoe/nginx/socket/guya.sock
+SocketUser=ubuntu
+SocketGroup=www-data
+SocketMode=0660
+
+[Install]
+WantedBy=sockets.target

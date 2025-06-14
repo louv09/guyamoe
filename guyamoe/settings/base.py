@@ -27,7 +27,7 @@ CANONICAL_ROOT_DOMAIN = "127.0.0.1:8000"
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'roml-moe.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 SITE_ID = 1
 
@@ -171,7 +171,7 @@ ALLOWS_DOWNLOAD_AS_ZIP = True
 # DISCORD_PRERELEASE_MESSAGE = "If you found an issue with this release <:bonk:807730387115442257>, share it on <#875807668390993920>"
 
 BRANDING_NAME = "ROML Scans"
-BRANDING_DESCRIPTION = "Thank you for reading! A circle that works on random twitter and pixiv one-shots and the occasional cute manga."
+BRANDING_DESCRIPTION = "Thank you for reading! A group that works on Rom-com managas."
 BRANDING_IMAGE_URL = "https://files.catbox.moe/8wwlgk.png"
 
 HOME_BRANDING_NAME = "Home for scanlations of ROML Scans"

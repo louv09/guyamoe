@@ -3,11 +3,11 @@ import os
 from .base import *
 
 
-CANONICAL_ROOT_DOMAIN = "roml-moe.onrender.com"
+CANONICAL_ROOT_DOMAIN = "44.202.167.178"
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,roml-moe.onrender.com").split(",")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,44.202.167.178").split(",")
 
 
 CACHES = {

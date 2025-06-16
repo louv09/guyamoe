@@ -15,7 +15,6 @@ import sys
 import logging
 import subprocess
 from pathlib import Path
-from whitenoise import WhiteNoise
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -23,11 +22,11 @@ PARENT_DIR = BASE_DIR.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "*_w8!vt80s9diakc462=yk#n=%5_5(_j+o-kfdag6+=@q67d+$")
 
-CANONICAL_ROOT_DOMAIN = "127.0.0.1:8000"
+CANONICAL_ROOT_DOMAIN = "44.202.167.178"
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['44.202.167.178', 'localhost', '127.0.0.1']
 
 SITE_ID = 1
 
@@ -74,7 +73,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "homepage.middleware.ReferralMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 # REFERRAL_SERVICE = 'http://127.0.0.1:8080' # Change this to where-ever Ai is hosted
@@ -150,25 +148,28 @@ STATICFILES_DIRS = [
     # os.path.join(BASE_DIR, "reader", "static"),
 ]
 
-STATIC_VERSION = "?v=" + subprocess.check_output(
-    ["git", "-C", str(BASE_DIR), "rev-parse", "--short", "HEAD"], text=True
-)
+try:
+    STATIC_VERSION = "?v=" + subprocess.check_output(
+        ['git', 'rev-parse', 'HEAD']
+    ).decode('utf-8').strip()
+except Exception:
+    STATIC_VERSION = ""
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 ALLOWS_DOWNLOAD_AS_ZIP = True
 
-# IMGUR_CLIENT_ID = os.environ.get("IMGUR_CLIENT_ID", "")
-# DISCORD_RELEASE_WEBHOOK_URL = os.environ.get("DISCORD_RELEASE_WEBHOOK_URL", "")
-# DISCORD_NSFW_RELEASE_WEBHOOK_URL = os.environ.get("DISCORD_NSFW_RELEASE_WEBHOOK_URL", "")
-# DISCORD_PRERELEASE_WEBHOOK_URL = os.environ.get("DISCORD_PRERELEASE_WEBHOOK_URL", "")
-# DISCORD_USERNAME = "Danke.moe"
-# DISCORD_PING_NEW_RELEASE = "<@&797689910890594305>" # @AllRelease
-# DISCORD_PING_NEW_NSFW_RELEASE = "<@&992904261480497292>" # @NSFW Updates 
-# DISCORD_PING_ONESHOT = "<@&797689909276180510>" # @OneShot
-# DISCORD_PING_QC_ROLE = "<@&796228557256654858>"  # @Quality Control/Proofreading, to find that code, enter \@therole on discord
-# DISCORD_PRERELEASE_MESSAGE = "If you found an issue with this release <:bonk:807730387115442257>, share it on <#875807668390993920>"
+IMGUR_CLIENT_ID = os.environ.get("IMGUR_CLIENT_ID", "")
+DISCORD_RELEASE_WEBHOOK_URL = os.environ.get("DISCORD_RELEASE_WEBHOOK_URL", "")
+DISCORD_NSFW_RELEASE_WEBHOOK_URL = os.environ.get("DISCORD_NSFW_RELEASE_WEBHOOK_URL", "")
+DISCORD_PRERELEASE_WEBHOOK_URL = os.environ.get("DISCORD_PRERELEASE_WEBHOOK_URL", "")
+DISCORD_USERNAME = "Danke.moe"
+DISCORD_PING_NEW_RELEASE = "<@&797689910890594305>" # @AllRelease
+DISCORD_PING_NEW_NSFW_RELEASE = "<@&992904261480497292>" # @NSFW Updates 
+DISCORD_PING_ONESHOT = "<@&797689909276180510>" # @OneShot
+DISCORD_PING_QC_ROLE = "<@&796228557256654858>"  # @Quality Control/Proofreading, to find that code, enter \@therole on discord
+DISCORD_PRERELEASE_MESSAGE = "If you found an issue with this release <:bonk:807730387115442257>, share it on <#875807668390993920>"
 
 BRANDING_NAME = "ROML Scans"
 BRANDING_DESCRIPTION = "Thank you for reading! A group that works on Rom-com managas."

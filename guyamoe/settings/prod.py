@@ -3,7 +3,7 @@ import os
 from .base import *
 
 
-CANONICAL_ROOT_DOMAIN = "danke.moe"
+CANONICAL_ROOT_DOMAIN = "44.202.167.178"
 SECURE_HSTS_SECONDS = 60
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
@@ -16,15 +16,11 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = "ALLOW"
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    "danke.moe",
-    "localhost",
-    "danke.mangadex.dev",
-]
+ALLOWED_HOSTS = ['44.202.167.178', 'localhost', '127.0.0.1']
 
-CANONICAL_SITE_NAME = "guya.moe"
+CANONICAL_SITE_NAME = "ROML Scans"
 
 LOGGING = {
     "version": 1,
